@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelby-Offc - Pembayaran via DANA</title>
+    <style>
+        :root {
+            --dana-blue: #00d1ff;
+            --dana-dark: #0085ff;
+            --black-1: #000000;
+            --black-2: #121212;
+            --black-3: #1e1e1e;
+            --black-4: #333333;
+            --gray-1: #aaaaaa;
+            --gray-2: #cccccc;
+            --gray-3: #666666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--black-1);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: var(--black-2);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(0, 209, 255, 0.3));
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: var(--gray-1);
+            margin-bottom: 20px;
+        }
+        
+        .payment-details {
+            background-color: var(--black-3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--black-4);
+        }
+        
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            color: var(--gray-1);
+        }
+        
+        .detail-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .dana-number-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .dana-number {
+            font-size: 18px;
+            letter-spacing: 1px;
+            color: var(--dana-blue);
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        
+        .dana-number:hover {
+            background-color: rgba(0, 209, 255, 0.1);
+        }
+        
+        .dana-number:active {
+            transform: scale(0.95);
+            background-color: rgba(0, 209, 255, 0.2);
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, var(--dana-blue), var(--dana-dark));
+            color: #000000;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .instructions {
+            background-color: var(--black-3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .instructions h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+        
+        .steps {
+            list-style-type: none;
+        }
+        
+        .steps li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--gray-2);
+            line-height: 1.5;
+        }
+        
+        .steps li:before {
+            content: counter(step);
+            counter-increment: step;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, var(--dana-blue), var(--dana-dark));
+            color: #000000;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--gray-3);
+            margin-top: 20px;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--dana-blue);
+            opacity: 0;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .logo {
+                width: 100px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .dana-number {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="Logo DANA" class="logo">
+            <h1>Shelby-Offc</h1>
+            <div class="subtitle">Pembayaran via DANA</div>
+        </div>
+        
+        <div class="payment-details">
+            <div class="detail-row">
+                <span class="detail-label">Metode Pembayaran</span>
+                <span class="detail-value">DANA</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Nomor DANA</span>
+                <div class="dana-number-container">
+                    <span class="dana-number" id="danaNumber">083831234420</span>
+                    <button class="copy-btn" id="copyBtn">Salin</button>
+                </div>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Penerima</span>
+                <span class="detail-value">Shelby-Offc</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>Petunjuk Pembayaran</h2>
+            <ol class="steps">
+                <li>Buka aplikasi DANA di ponsel Anda</li>
+                <li>Pergi ke menu 'Kirim Uang'</li>
+                <li>Masukkan nomor DANA di atas atau scan QR code</li>
+                <li>Masukkan nominal pembayaran</li>
+                <li>Tambahkan catatan jika perlu (opsional)</li>
+                <li>Konfirmasi dan selesaikan transaksi</li>
+            </ol>
+        </div>
+        
+        <div class="footer">
+            Setelah pembayaran, harap konfirmasi dengan mengirimkan bukti transfer ke kontak kami
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const steps = document.querySelector('.steps');
+            steps.style.counterReset = 'step';
+            
+            const danaNumber = document.getElementById('danaNumber');
+            const copyBtn = document.getElementById('copyBtn');
+            
+            // Efek ketika nomor DANA diklik
+            danaNumber.addEventListener('click', () => {
+                // Animasi tekan
+                danaNumber.style.transform = 'scale(0.95)';
+                danaNumber.style.backgroundColor = 'rgba(0, 209, 255, 0.2)';
+                
+                // Kembali ke normal setelah 0.3 detik
+                setTimeout(() => {
+                    danaNumber.style.transform = '';
+                    danaNumber.style.backgroundColor = '';
+                }, 300);
+                
+                // Salin otomatis ketika diklik
+                copyToClipboard();
+            });
+            
+            // Fungsi untuk menyalin nomor
+            function copyToClipboard() {
+                const text = danaNumber.innerText;
+                
+                navigator.clipboard.writeText(text).then(() => {
+                    // Animasi tombol
+                    copyBtn.textContent = 'Tersalin!';
+                    copyBtn.style.background = 'linear-gradient(135deg, #00ff88, #0085ff)';
+                    
+                    // Buat efek confetti
+                    createConfetti();
+                    
+                    // Kembali ke normal setelah 2 detik
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Salin';
+                        copyBtn.style.background = 'linear-gradient(135deg, var(--dana-blue), var(--dana-dark))';
+                    }, 2000);
+                });
+            }
+            
+            // Fungsi untuk efek confetti
+            function createConfetti() {
+                const colors = ['#00d1ff', '#00ff88', '#ff00aa', '#ffcc00'];
+                
+                for (let i = 0; i < 30; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = -10 + 'px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Animasi confetti
+                    const animation = confetti.animate([
+                        { top: -10 + 'px', opacity: 1, transform: `rotate(0deg) scale(1)` },
+                        { top: Math.random() * 100 + 50 + 'vh', opacity: 0, transform: `rotate(${Math.random() * 360}deg) scale(0.2)` }
+                    ], {
+                        duration: 1000 + Math.random() * 2000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
+                    });
+                    
+                    animation.onfinish = () => {
+                        confetti.remove();
+                    };
+                }
+            }
+            
+            // Event listener untuk tombol salin
+            copyBtn.addEventListener('click', copyToClipboard);
+        });
+    </script>
+</body>
+  </html>
